@@ -22,6 +22,11 @@ namespace CurrentAccount.Models
                 return Result.Fail("Initial credit needs to be a valid monetary amount with maximum 2 decimal places");
             }
 
+            if (LinkedAccount != null)
+            {
+                return Result.Fail("Customer already have an open account. You cannot open another one");
+            }
+
             var account = new Account
             {
                 CustomerId = CustomerId,

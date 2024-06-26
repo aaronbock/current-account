@@ -21,6 +21,26 @@ namespace CurrentAccount.Tests
         }
 
         [Fact]
+        public void Customer_OpenAccount_Twice_ReturnsFailure()
+        {
+            // Arrange
+            var fakeRepository = new FakeCustomerRepository();
+            var sut = fakeRepository.Get(1);
+
+            // Act
+            var result = sut.Value.OpenAccount(100);
+            var result2 = sut.Value.OpenAccount(200);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.ValueOrDefault);
+            Assert.NotNull(result2);
+            Assert.True(result2.IsFailed);
+            Assert.Equal(100, result.Value.LinkedAccount.Balance);
+        }
+
+        [Fact]
         public void Customer_OpenAccount_WithZeroInitialCredit_DoesNotAddBalanceAndTransaction()
         {
             // Arrange
